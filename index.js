@@ -38,17 +38,20 @@ function onLogout(user) {
 
 // 监听对话
 async function onMessage(msg) {
- 
     const contact = msg.from() // 发消息人
+   // console.log(msg.alias)
     const content = msg.text() //消息内容
     const room = msg.room() //是否是群消息
     if (msg.self()) {
         return
     }
+
     if (room) { // 如果是群消息
         const topic = await room.topic()
-        console.log(`群名: ${topic} 发消息人: ${contact.name()} 内容: ${content}`)
+        console.log('群消息不处理')
+       // console.log(`群名: ${topic} 发消息人: ${contact.name()} 内容: ${content}`)
     } else { // 如果非群消息
+        console.log('单独发信息：',JSON.stringify(msg))
         console.log(`发消息人: ${contact.name()} 消息内容: ${content}`)
         // 如果开启自动聊天
         if (config.AUTOREPLY) { 

@@ -15,5 +15,7 @@ module.exports = {
     AUTOREPLY: true, //自动聊天功能 默认开启
     AIBOTAPI: 'http://api.tianapi.com/txapi/robot/', //天行机器人API 注册地址https://www.tianapi.com/signup.html?source=474284281
     APIKEY: '天行机器人apikey', //天行机器人apikey
-    robotg: 'http://www.robot-g.com/g/data.php'
+    robotg: 'http://www.robot-g.com/g/data.php',
+    IgnoreRobotUser: [''], //排除那些人不使用机器人
+    useRobotUsers: ['']  // 那些人使用机器人
 }
