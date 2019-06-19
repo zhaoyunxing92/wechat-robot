@@ -38,6 +38,9 @@ function onLogout(user) {
 
 // 监听对话
 async function onMessage(msg) {
+
+
+    
     const contact = msg.from() // 发消息人
    // console.log(msg.alias)
     const content = msg.text() //消息内容

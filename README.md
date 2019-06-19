@@ -6,5 +6,7 @@
 
  * 利用抓包工具添加了简单的[robot-g](http://www.robot-g.com)机器人，不用申请，开箱即用 
  
- * [土味情话](https://api.lovelive.tools/api/SweetNothings)替换天气
+ * [土味情话](https://api.lovelive.tools/api/SweetNothings)添加
+
+ * 添加排除用户功能
 
