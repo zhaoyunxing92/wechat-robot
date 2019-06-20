@@ -24,11 +24,12 @@ function onScan(qrcode, status) {
 // 登录
 async function onLogin(user) {
     console.log(`贴心小助理${user}登录了`)
-    if(config.AUTOREPLY){
-        console.log(`已开启机器人自动聊天模式`)
-    }
+   
     // 登陆后创建定时任务
-   // await initDay()
+    if(config.openTask){
+      await initSchedule()
+    }
+    
 }
 
 //登出
@@ -38,68 +39,66 @@ function onLogout(user) {
 
 // 监听对话
 async function onMessage(msg) {
-
-
-    
+  
     const contact = msg.from() // 发消息人
-   // console.log(msg.alias)
     const content = msg.text() //消息内容
     const room = msg.room() //是否是群消息
+    const name=contact.name()
     if (msg.self()) {
         return
     }
-
+    
     if (room) { // 如果是群消息
-        const topic = await room.topic()
+        //const topic = await room.topic()
         console.log('群消息不处理')
        // console.log(`群名: ${topic} 发消息人: ${contact.name()} 内容: ${content}`)
     } else { // 如果非群消息
-        console.log('单独发信息：',JSON.stringify(msg))
-        console.log(`发消息人: ${contact.name()} 消息内容: ${content}`)
+        console.log(`发消息人: ${name} 消息内容: ${content}`)
         // 如果开启自动聊天
-        if (config.AUTOREPLY) { 
-            let reply = await superagent.robot(content)
-            console.log('robot-g', reply)
-            try {
-                await delay(3000)
-                await contact.say(reply)
-            } catch (e) {
-                console.error(e)
+        if (config.robotg.open) { 
+            //需要发送的用户
+            let useUsers=untils.subtraction(config.robotg.useUsers,config.robotg.ignoreUsers);
+            console.log(`规则过滤可以使用robot-g用户：${useUsers}`)
+            if(config.robotg.replyAll || useUsers.indexOf(name) || useUsers.indexOf(contact.alias())){
+                let reply = await superagent.robot(content)
+                console.log('robot-g >', reply)
+                try {
+                    await delay(2000)
+                    await contact.say(reply)
+                } catch (e) {
+                    console.error(e)
+                }
+            }else{
+                console.log(`用户${name}不在规则内，不处理`)
             }
-        }else{
-            // 开启撩人模式
-            let nothings=await superagent.sweetNothings()
-            await delay(2000)
-            await contact.say(nothings)
+            
         }
     }
     
 }
 
 // 定时任务发送
-async function initDay() {
-    console.log(`已经设定每日说任务`)
-    schedule.setSchedule(config.SENDDATE, async() => {
-        console.log('你的贴心小助理开始工作啦！')
-        let logMsg
-        let contact = await bot.Contact.find({ name: config.NICKNAME }) || await bot.Contact.find({ alias: config.NAME }) // 获取你要发送的联系人
-        let nothings=await superagent.sweetNothings()
-
-        let today = await untils.formatDate(new Date()) //获取今天的日期
-        let memorialDay = untils.getDay(config.MEMORIAL_DAY) //获取纪念日天数
-        let str = today + '<br>我们在一起的第' + memorialDay + '天<br>' + '我想对你说：' +nothings
-      
-        try {
-            logMsg = str
-            await delay(2000)
-            await contact.say(str) // 发送消息
-        } catch (e) {
-            logMsg = e.message
+async function initSchedule() {
+    console.log('定时任务开始加载')
+    config.sweetNothingTask.users.forEach(user => {
+        if(user.open){
+            schedule.setSchedule(user.schedule, async() => {
+                console.log(`用户：${user.name}开始定时任务`)
+                let nothings=await superagent.sweetNothings()
+                let contact = await bot.Contact.find({ name: user.nickName }) || await bot.Contact.find({ alias: user.name }) // 获取你要发送的联系人
+                let logMsg
+                try {
+                    logMsg = nothings
+                    await delay(2000)
+                    await contact.say(logMsg) // 发送消息
+                } catch (e) {
+                    logMsg = e.message
+                }
+                 console.log(logMsg)   
+            })
         }
-        console.log(logMsg)
-    })  
+    })
 }
-
 
 const bot = new Wechaty({ name: 'WechatEveryDay' })
 

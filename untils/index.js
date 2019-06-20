@@ -42,6 +42,32 @@ function formatDate(date) {
     return year + "-" + month + "-" + day + "日 " + hour + ":" + min  + ' '+ str;
 }
 
+// 数组减法
+function subtraction(arr1,arr2){
+    let newArr=new Array()
+    uniquelize(arr1).forEach(arr=> { 
+        if(arr2.indexOf(arr)===-1){
+            newArr.push(arr) 
+        }
+    })
+    return newArr;
+}
+
+// 数组去除重复,去除空字符串
+function uniquelize (a){  
+     let arr = new Array();
+     for(var i = 0; i < a.length; i ++){  
+         let str=a[i];
+         if(arr.indexOf(str)===-1&&str.length>0){  
+            arr.push(str);  
+         }  
+     }  
+   return arr;
+}
+
 module.exports = {
-    getDay, formatDate
+    getDay, 
+    formatDate,
+    subtraction,
+    uniquelize 
 }
