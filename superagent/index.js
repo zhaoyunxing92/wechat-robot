@@ -53,21 +53,24 @@ async function getReply(word) { // 天行聊天机器人
 }
 // robotg机器人
 async function robot(word) {
-    let url = config.robotg
-    let res = await superagent.robotG(url, 'POST',{question:word})
-    let ack=res.text.split('|FG|')[0]
-    console.log('rebotg ack > ',ack)
+    let ack
+    try{
+       let res = await superagent.robotG(config.robotg.url, 'POST',{question:word})
+       ack=res.text.split('|FG|')[0]
+    }catch(e){
+       console.error(e)
+       ack='我好像迷失在无边的网络中了，你能找回我么'
+    }
    return ack
 }
 
 // 土味情话
 async function sweetNothings(){
-    let res = await superagent.req(config.SWEET_NOTHINGS, 'GET')
-    console.log(res.text)
+    let res = await superagent.req(config.sweetNothingTask.url, 'GET')
     return res.text;
 }
 
-sweetNothings()
+robot("hello")
 
  module.exports = {
     getOne,
