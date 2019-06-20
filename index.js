@@ -44,7 +44,9 @@ async function onMessage(msg) {
     const content = msg.text() //消息内容
     const room = msg.room() //是否是群消息
     const name=contact.name()
-    if (msg.self()) {
+
+    if (msg.self()||config.robotg.ignoreUsers.indexOf(name)!==-1) {
+        console.log(`[${name}] 命中忽略规则不处理`)
         return
     }
     
@@ -59,8 +61,13 @@ async function onMessage(msg) {
             //需要发送的用户
             let useUsers=untils.subtraction(config.robotg.useUsers,config.robotg.ignoreUsers);
             console.log(`规则过滤可以使用robot-g用户：${useUsers}`)
-            if(config.robotg.replyAll || useUsers.indexOf(name) || useUsers.indexOf(contact.alias())){
-                let reply = await superagent.robot(content)
+            if(useUsers.indexOf(name) || useUsers.indexOf(contact.alias())||config.robotg.replyAll){
+                let reply
+                if(content.indexOf('[收到了一个表情，请在手机上查看]')!==-1||content.indexOf('emoji')!==-1){
+                    reply='暂时只支持文字哈 [robotg]'
+                }else{
+                    reply = await superagent.robot(content)+' [robotg-g]'
+                }
                 console.log('robot-g >', reply)
                 try {
                     await delay(2000)
