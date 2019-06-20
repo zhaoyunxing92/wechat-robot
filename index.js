@@ -44,9 +44,20 @@ async function onMessage(msg) {
     const content = msg.text() //消息内容
     const room = msg.room() //是否是群消息
     const name=contact.name()
-
+    
+    if(msg.type===1){
+        console.log(`[${name}] 是公众号信息不理睬`)
+        return 
+    }
+    // 过滤判断
     if (msg.self()||config.robotg.ignoreUsers.indexOf(name)!==-1) {
         console.log(`[${name}] 命中忽略规则不处理`)
+        return
+    }
+    
+    //好友判断
+    if(!contact.friend()){
+        console.log(`[${name}] 跟你不是好友不理睬`)
         return
     }
     
@@ -56,11 +67,13 @@ async function onMessage(msg) {
        // console.log(`群名: ${topic} 发消息人: ${contact.name()} 内容: ${content}`)
     } else { // 如果非群消息
         console.log(`发消息人: ${name} 消息内容: ${content}`)
+        console.log()
         // 如果开启自动聊天
         if (config.robotg.open) { 
             //需要发送的用户
             let useUsers=untils.subtraction(config.robotg.useUsers,config.robotg.ignoreUsers);
             console.log(`规则过滤可以使用robot-g用户：${useUsers}`)
+           
             if(useUsers.indexOf(name) || useUsers.indexOf(contact.alias())||config.robotg.replyAll){
                 let reply
                 if(content.indexOf('[收到了一个表情，请在手机上查看]')!==-1||content.indexOf('emoji')!==-1){
