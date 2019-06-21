@@ -46,6 +46,8 @@ async function onMessage(msg) {
     const name=contact.name() //你好友自己的名称
     const alias= await contact.alias() // 别名,你定义的
 
+    console.log(`发消息人: [${name}],别名:[${alias}],消息内容: ${content}`)
+
     if(msg.type===1){
         console.log(`[${name}] 是公众号信息不理睬`)
         return 
@@ -67,8 +69,7 @@ async function onMessage(msg) {
         console.log('群消息不处理')
        // console.log(`群名: ${topic} 发消息人: ${contact.name()} 内容: ${content}`)
     } else { // 如果非群消息
-        console.log(`发消息人: ${name} 消息内容: ${content}`)
-        console.log()
+        
         // 如果开启自动聊天
         if (config.robotg.open) { 
             //需要发送的用户
@@ -79,7 +80,9 @@ async function onMessage(msg) {
                 let reply
                 if(content.indexOf('[收到了一个表情，请在手机上查看]')!==-1||content.indexOf('emoji')!==-1){
                     reply='暂时只支持文字哈 [g]'
-                }else{
+                }else if(untils.revocationMsgc(content)){
+                    reply='你撤回了什么见不得人的信息 [g]'
+                }else {
                     reply = await superagent.robot(content)+' [rg]'
                 }
                 console.log('robot-g >', reply)
@@ -90,7 +93,7 @@ async function onMessage(msg) {
                     console.error(e)
                 }
             }else{
-                console.log(`用户[${name},别名:[${alias}]不在规则内，不启用机器人`)
+                console.log(`用户:[${name}],别名:[${alias}]不在规则内，不启用机器人`)
             }
             
         }
