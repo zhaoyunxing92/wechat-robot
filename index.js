@@ -47,9 +47,9 @@ async function onMessage(msg) {
     const alias= await contact.alias() // 别名,你定义的
 
     console.log(`发消息人: [${name}],别名:[${alias}],消息内容: ${content}`)
-
-    if(msg.type===1){
-        console.log(`[${name}] 是公众号信息不理睬`)
+    
+    if(msg.type() !== bot.Message.Type.Text){
+        console.log(`[${name}] 文本信息不理睬`)
         return 
     }
     // 过滤判断
@@ -57,7 +57,7 @@ async function onMessage(msg) {
         console.log(`[${name}] 命中忽略规则不处理`)
         return
     }
-    
+
     //好友判断
     if(!contact.friend()){
         console.log(`[${name}] 跟你不是好友不理睬`)
@@ -78,9 +78,9 @@ async function onMessage(msg) {
             if(useUsers.indexOf(name)!==-1 || useUsers.indexOf(alias)!==-1 ||config.robotg.replyAll){
                 console.log(`规则过滤可以使用robot-g用户：[${name}],别名:[${alias}]`)
                 let reply
-                if(content.indexOf('[收到了一个表情，请在手机上查看]')!==-1||content.indexOf('emoji')!==-1){
+                if(msg.type() !== bot.Message.Type.Text){
                     reply='暂时只支持文字哈 [g]'
-                }else if(untils.revocationMsgc(content)){
+                }else if(msg.Recalled()){ //撤回信息
                     reply='你撤回了什么见不得人的信息 [g]'
                 }else {
                     reply = await superagent.robot(content)+' [rg]'
