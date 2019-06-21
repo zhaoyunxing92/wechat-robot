@@ -70,8 +70,6 @@ async function sweetNothings(){
     return res.text;
 }
 
-robot("hello")
-
  module.exports = {
     getOne,
     getWeather,
