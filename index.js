@@ -50,7 +50,7 @@ async function onMessage(msg) {
    
     // 过滤判断
     if (msg.self()||config.robotg.ignoreUsers.indexOf(name)!==-1) {
-        console.log(`[${name}] 命中忽略规则不处理`)
+        console.log(`[${name}] 命中忽略规则或者自己信息不理睬`)
         return
     }
 
