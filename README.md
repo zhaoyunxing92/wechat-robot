@@ -18,7 +18,7 @@ module.exports = {
     sweetNothingTask:{
         //url
         url:'https://api.lovelive.tools/api/SweetNothings',
-        // 用户 可以怕配置多个
+        // 用户 可以配置多个
         users:[
             {
                 open: false, //如果是false将不参与定时任务
