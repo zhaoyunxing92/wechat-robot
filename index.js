@@ -72,14 +72,14 @@ async function onMessage(msg) {
         if (config.robotg.open) { 
             //需要发送的用户
             let useUsers=untils.subtraction(config.robotg.useUsers,config.robotg.ignoreUsers);
-            console.log(`规则过滤可以使用robot-g用户：${useUsers}`)
            
-            if(useUsers.indexOf(name) || useUsers.indexOf(contact.alias())||config.robotg.replyAll){
+            if(useUsers.indexOf(name)!==-1 || useUsers.indexOf(contact.alias())!==-1 ||config.robotg.replyAll){
+                console.log(`规则过滤可以使用robot-g用户：[${useUsers}]`)
                 let reply
                 if(content.indexOf('[收到了一个表情，请在手机上查看]')!==-1||content.indexOf('emoji')!==-1){
-                    reply='暂时只支持文字哈 [robotg]'
+                    reply='暂时只支持文字哈 [g]'
                 }else{
-                    reply = await superagent.robot(content)+' [robotg-g]'
+                    reply = await superagent.robot(content)+' [rg]'
                 }
                 console.log('robot-g >', reply)
                 try {
@@ -89,7 +89,7 @@ async function onMessage(msg) {
                     console.error(e)
                 }
             }else{
-                console.log(`用户${name}不在规则内，不处理`)
+                console.log(`用户[${name}]不在规则内，不处理`)
             }
             
         }
