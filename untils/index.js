@@ -64,10 +64,16 @@ function uniquelize (a){  
      }  
    return arr;
 }
+// 判断是否撤回信息 微信撤回纯数字19位的id
+function revocationMsg(msg){
+
+   return /^\d{19}$/.test(msg)
+}
 
 module.exports = {
     getDay, 
     formatDate,
     subtraction,
-    uniquelize 
+    uniquelize,
+    revocationMsg 
 }
