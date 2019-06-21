@@ -75,7 +75,7 @@ async function onMessage(msg) {
             let useUsers=untils.subtraction(config.robotg.useUsers,config.robotg.ignoreUsers);
            
             if(useUsers.indexOf(name)!==-1 || useUsers.indexOf(alias)!==-1 ||config.robotg.replyAll){
-                console.log(`规则过滤可以使用robot-g用户：[${name}]`)
+                console.log(`规则过滤可以使用robot-g用户：[${name}],别名:[${alias}]`)
                 let reply
                 if(content.indexOf('[收到了一个表情，请在手机上查看]')!==-1||content.indexOf('emoji')!==-1){
                     reply='暂时只支持文字哈 [g]'
@@ -90,7 +90,7 @@ async function onMessage(msg) {
                     console.error(e)
                 }
             }else{
-                console.log(`用户[${name}]不在规则内，不处理`)
+                console.log(`用户[${name},别名:[${alias}]不在规则内，不启用机器人`)
             }
             
         }
