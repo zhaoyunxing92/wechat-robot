@@ -47,11 +47,7 @@ async function onMessage(msg) {
     const alias= await contact.alias() // 别名,你定义的
 
     console.log(`发消息人: [${name}],别名:[${alias}],消息内容: ${content}`)
-    
-    if(msg.type() !== bot.Message.Type.Text){
-        console.log(`[${name}] 文本信息不理睬`)
-        return 
-    }
+   
     // 过滤判断
     if (msg.self()||config.robotg.ignoreUsers.indexOf(name)!==-1) {
         console.log(`[${name}] 命中忽略规则不处理`)
