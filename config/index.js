@@ -27,7 +27,7 @@ module.exports = {
       open: true,// 是否开启自动回复
       url: 'http://www.robot-g.com/g/data.php',
       replyAll: false, //是否开启全部用户回复,默认关闭
-      useUsers: ['王振宇'],  //使用机器人的用户 跟上面的name和nickName使用一样
+      useUsers: ['王振宇','马传鹏'],  //使用机器人的用户 跟上面的name和nickName使用一样
       ignoreUsers: ['微信运动','微信开发者','微信读书','微信','小九'] //忽略的用户,可以是公众号名称
     },
 }

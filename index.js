@@ -43,8 +43,9 @@ async function onMessage(msg) {
     const contact = msg.from() // 发消息人
     const content = msg.text() //消息内容
     const room = msg.room() //是否是群消息
-    const name=contact.name()
-    
+    const name=contact.name() //你好友自己的名称
+    const alias= await contact.alias() // 别名,你定义的
+
     if(msg.type===1){
         console.log(`[${name}] 是公众号信息不理睬`)
         return 
@@ -73,8 +74,8 @@ async function onMessage(msg) {
             //需要发送的用户
             let useUsers=untils.subtraction(config.robotg.useUsers,config.robotg.ignoreUsers);
            
-            if(useUsers.indexOf(name)!==-1 || useUsers.indexOf(contact.alias())!==-1 ||config.robotg.replyAll){
-                console.log(`规则过滤可以使用robot-g用户：[${useUsers}]`)
+            if(useUsers.indexOf(name)!==-1 || useUsers.indexOf(alias)!==-1 ||config.robotg.replyAll){
+                console.log(`规则过滤可以使用robot-g用户：[${name}]`)
                 let reply
                 if(content.indexOf('[收到了一个表情，请在手机上查看]')!==-1||content.indexOf('emoji')!==-1){
                     reply='暂时只支持文字哈 [g]'
