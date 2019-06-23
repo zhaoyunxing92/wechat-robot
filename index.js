@@ -76,7 +76,7 @@ async function onMessage(msg) {
                 let reply
                 if(msg.type() !== bot.Message.Type.Text){
                     reply='暂时只支持文字哈 [g]'
-                }else if(msg.Recalled()){ //撤回信息
+                }else if(msg.type()===bot.Message.Type.Recalled){ //撤回信息
                     reply='你撤回了什么见不得人的信息 [g]'
                 }else {
                     reply = await superagent.robot(content)+' [rg]'
